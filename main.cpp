@@ -89,7 +89,11 @@ void produce(char id, int num_jobs){
 		int val = rand()%10 + 1;
 		if(space->try_acquire_for(chrono::seconds(10))){
 			_mutex.acquire();
+//			_iomutex.acquire();
+//			cout << "\tProducer " << id << " put " << val << "\t\t->";
 			q->put(val);
+//			q->display();
+//			_iomutex.release();
 			_mutex.release();
 			item->release();
 			num_jobs--;
@@ -112,7 +116,11 @@ void consume(char id){
 	while(true){
 		if(item->try_acquire_for(chrono::seconds(10))){
 			_mutex.acquire();
+//			_iomutex.acquire();
 			int ans = q->pop();
+//			cout << "\tConsumer " << id << " popped " << ans << "\t\t->";
+//			q->display();
+//			_iomutex.release();
 			_mutex.release();
 			space->release();
 			num_jobs++;
